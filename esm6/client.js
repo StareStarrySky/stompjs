@@ -105,6 +105,8 @@ export class Client {
         this.onStompError = noOp;
         this.onWebSocketClose = noOp;
         this.onWebSocketError = noOp;
+        this.onHeartbeatIn = noOp;
+        this.onHeartbeatOut = noOp;
         this.logRawCommunication = false;
         this.onChangeState = noOp;
         // These parameters would typically get proper values before connect is called
@@ -273,6 +275,12 @@ export class Client {
             onUnhandledFrame: frame => {
                 this.onUnhandledFrame(frame);
             },
+            onHeartbeatIn: () => {
+                this.onHeartbeatIn();
+            },
+            onHeartbeatOut: () => {
+                this.onHeartbeatOut();
+            }
         });
         this._stompHandler.start();
     }

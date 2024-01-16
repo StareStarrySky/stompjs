@@ -604,6 +604,8 @@
             this.onUnhandledMessage = config.onUnhandledMessage;
             this.onUnhandledReceipt = config.onUnhandledReceipt;
             this.onUnhandledFrame = config.onUnhandledFrame;
+            this.onHeartbeatIn = config.onHeartbeatIn;
+            this.onHeartbeatOut = config.onHeartbeatOut;
         }
         get connectedVersion() {
             return this._connectedVersion;
@@ -625,6 +627,7 @@
             }, 
             // On Incoming Ping
             () => {
+                this.onHeartbeatIn();
                 this.debug('<<< PONG');
             });
             this._webSocket.onmessage = (evt) => {
@@ -680,6 +683,7 @@
                 this._pinger = setInterval(() => {
                     if (this._webSocket.readyState === exports.StompSocketState.OPEN) {
                         this._webSocket.send(BYTE.LF);
+                        this.onHeartbeatOut();
                         this.debug('>>> PING');
                     }
                 }, ttl);
@@ -995,6 +999,8 @@
             this.onStompError = noOp;
             this.onWebSocketClose = noOp;
             this.onWebSocketError = noOp;
+            this.onHeartbeatIn = noOp;
+            this.onHeartbeatOut = noOp;
             this.logRawCommunication = false;
             this.onChangeState = noOp;
             // These parameters would typically get proper values before connect is called
@@ -1163,6 +1169,12 @@
                 onUnhandledFrame: frame => {
                     this.onUnhandledFrame(frame);
                 },
+                onHeartbeatIn: () => {
+                    this.onHeartbeatIn();
+                },
+                onHeartbeatOut: () => {
+                    this.onHeartbeatOut();
+                }
             });
             this._stompHandler.start();
         }

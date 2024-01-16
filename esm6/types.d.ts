@@ -164,4 +164,6 @@ export interface IStomptHandlerConfig {
     onUnhandledMessage: messageCallbackType;
     onUnhandledReceipt: frameCallbackType;
     onUnhandledFrame: frameCallbackType;
+    onHeartbeatIn: () => void;
+    onHeartbeatOut: () => void;
 }

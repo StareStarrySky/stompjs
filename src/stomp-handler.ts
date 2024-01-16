@@ -57,6 +57,10 @@ export class StompHandler {
 
   public onWebSocketError: wsErrorCallbackType;
 
+  public onHeartbeatIn: () => void;
+
+  public onHeartbeatOut: () => void;
+
   public logRawCommunication: boolean;
 
   public splitLargeFrames: boolean;
@@ -129,6 +133,8 @@ export class StompHandler {
     this.onUnhandledMessage = config.onUnhandledMessage;
     this.onUnhandledReceipt = config.onUnhandledReceipt;
     this.onUnhandledFrame = config.onUnhandledFrame;
+    this.onHeartbeatIn = config.onHeartbeatIn;
+    this.onHeartbeatOut = config.onHeartbeatOut;
   }
 
   public start(): void {
@@ -151,6 +157,7 @@ export class StompHandler {
       },
       // On Incoming Ping
       () => {
+        this.onHeartbeatIn();
         this.debug('<<< PONG');
       }
     );
@@ -292,6 +299,7 @@ export class StompHandler {
       this._pinger = setInterval(() => {
         if (this._webSocket.readyState === StompSocketState.OPEN) {
           this._webSocket.send(BYTE.LF);
+          this.onHeartbeatOut()
           this.debug('>>> PING');
         }
       }, ttl);

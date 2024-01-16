@@ -101,6 +101,16 @@ export class Client {
   public heartbeatOutgoing: number = 10000;
 
   /**
+   * Callback, invoked on a heartbeat received.
+   */
+  public onHeartbeatIn: () => void;
+
+  /**
+   * Callback, invoked on a heartbeat sent.
+   */
+  public onHeartbeatOut: () => void;
+
+  /**
    * This switches on a non-standard behavior while sending WebSocket packets.
    * It splits larger (text) packets into chunks of [maxWebSocketChunkSize]{@link Client#maxWebSocketChunkSize}.
    * Only Java Spring brokers seem to support this mode.
@@ -358,6 +368,8 @@ export class Client {
     this.onStompError = noOp;
     this.onWebSocketClose = noOp;
     this.onWebSocketError = noOp;
+    this.onHeartbeatIn = noOp;
+    this.onHeartbeatOut = noOp;
     this.logRawCommunication = false;
     this.onChangeState = noOp;
 
@@ -510,6 +522,12 @@ export class Client {
       onUnhandledFrame: frame => {
         this.onUnhandledFrame(frame);
       },
+      onHeartbeatIn: () => {
+        this.onHeartbeatIn();
+      },
+      onHeartbeatOut: () => {
+        this.onHeartbeatOut();
+      }
     });
 
     this._stompHandler.start();

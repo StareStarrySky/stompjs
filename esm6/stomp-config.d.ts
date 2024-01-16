@@ -98,6 +98,14 @@ export declare class StompConfig {
      */
     onWebSocketError?: wsErrorCallbackType;
     /**
+     * See [Client#onHeartbeatIn]{@link Client#onHeartbeatIn}.
+     */
+    onHeartbeatIn?: () => void;
+    /**
+     * See [Client#onHeartbeatOut]{@link Client#onHeartbeatOut}.
+     */
+    onHeartbeatOut?: () => void;
+    /**
      * See [Client#logRawCommunication]{@link Client#logRawCommunication}.
      */
     logRawCommunication?: boolean;

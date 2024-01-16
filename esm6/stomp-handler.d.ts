@@ -28,6 +28,8 @@ export declare class StompHandler {
     onStompError: frameCallbackType;
     onWebSocketClose: closeEventCallbackType;
     onWebSocketError: wsErrorCallbackType;
+    onHeartbeatIn: () => void;
+    onHeartbeatOut: () => void;
     logRawCommunication: boolean;
     splitLargeFrames: boolean;
     maxWebSocketChunkSize: number;

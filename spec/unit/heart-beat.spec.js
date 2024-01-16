@@ -51,6 +51,8 @@ describe('Ping', () => {
   const incomingPingTest = done => {
     client.heartbeatIncoming = 1000;
     client.heartbeatOutgoing = 0;
+    client.onHeartbeatIn = () => console.log('heartbeat in')
+    client.onHeartbeatOut = () => console.log('heartbeat out')
 
     overRideFactory(
       client,

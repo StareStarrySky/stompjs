@@ -72,6 +72,14 @@ export declare class Client {
      */
     heartbeatOutgoing: number;
     /**
+     * Callback, invoked on a heartbeat received.
+     */
+    onHeartbeatIn: () => void;
+    /**
+     * Callback, invoked on a heartbeat sent.
+     */
+    onHeartbeatOut: () => void;
+    /**
      * This switches on a non-standard behavior while sending WebSocket packets.
      * It splits larger (text) packets into chunks of [maxWebSocketChunkSize]{@link Client#maxWebSocketChunkSize}.
      * Only Java Spring brokers seem to support this mode.

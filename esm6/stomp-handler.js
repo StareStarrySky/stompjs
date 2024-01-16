@@ -102,6 +102,8 @@ export class StompHandler {
         this.onUnhandledMessage = config.onUnhandledMessage;
         this.onUnhandledReceipt = config.onUnhandledReceipt;
         this.onUnhandledFrame = config.onUnhandledFrame;
+        this.onHeartbeatIn = config.onHeartbeatIn;
+        this.onHeartbeatOut = config.onHeartbeatOut;
     }
     get connectedVersion() {
         return this._connectedVersion;
@@ -123,6 +125,7 @@ export class StompHandler {
         }, 
         // On Incoming Ping
         () => {
+            this.onHeartbeatIn();
             this.debug('<<< PONG');
         });
         this._webSocket.onmessage = (evt) => {
@@ -178,6 +181,7 @@ export class StompHandler {
             this._pinger = setInterval(() => {
                 if (this._webSocket.readyState === StompSocketState.OPEN) {
                     this._webSocket.send(BYTE.LF);
+                    this.onHeartbeatOut();
                     this.debug('>>> PING');
                 }
             }, ttl);
